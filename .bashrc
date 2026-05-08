@@ -1,0 +1,1 @@
+/home/leoarr/.bashrc
