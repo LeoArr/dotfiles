@@ -1,1 +1,9 @@
 helix/runtime
+*
+!helix
+!tmux
+!nvim
+!yazi
+!ghostty
+!lazygit
+!starship
