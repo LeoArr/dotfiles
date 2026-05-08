@@ -1,0 +1,14 @@
+[[plugin.deps]]
+use = "AnirudhG07/rich-preview"
+rev = "843c3fa"
+hash = "b4040931f0d2f9670ddb4923e55cd881"
+
+[[flavor.deps]]
+use = "yazi-rs/flavors:catppuccin-macchiato"
+rev = "0670801"
+hash = "67f2240fd9c98f21714527a24cd672f8"
+
+[[flavor.deps]]
+use = "yazi-rs/flavors:catppuccin-latte"
+rev = "0670801"
+hash = "b8f46853c27707115f25f3423a47bd38"

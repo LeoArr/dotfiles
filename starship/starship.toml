@@ -1,0 +1,137 @@
+# ~/.config/starship.toml
+
+# Get prompt to wait a bit before printing for slower commands
+command_timeout = 1000
+add_newline = false
+
+# Custom prompt format - controls the order of modules
+format = """
+[╭─](bold green) $username$hostname$directory$git_branch$git_status$git_state$fill$python$java$nodejs$package$cmd_duration$jobs
+[╰─](bold green)$character"""
+
+# ── Prompt character ─────────────────────────────────────────
+[character]
+success_symbol = "[➜](bold green)"
+error_symbol   = "[✗](bold red)"
+vimcmd_symbol  = "[N](bold yellow)"
+
+# ── Directory ────────────────────────────────────────────────
+[directory]
+truncation_length = 4
+truncation_symbol = "…/"
+home_symbol       = "~"
+read_only         = " 󰌾"
+style             = "bold cyan"
+format            = "[$path]($style)[$read_only]($read_only_style) "
+
+[directory.substitutions]
+"Documents" = "󰈙 "
+"Downloads" = " "
+"Music"     = " "
+"Pictures"  = " "
+
+# ── Git ──────────────────────────────────────────────────────
+[git_branch]
+symbol = " "
+style  = "bold purple"
+format = "on [$symbol$branch]($style) "
+
+[git_status]
+style          = "bold yellow"
+format         = "([\\[$all_status$ahead_behind\\]]($style) )"
+conflicted     = "="
+ahead          = "⇡${count}"
+behind         = "⇣${count}"
+diverged       = "⇕⇡${ahead_count}⇣${behind_count}"
+up_to_date     = ""
+untracked      = "?${count}"
+stashed        = "\\$"
+modified       = "!${count}"
+staged         = "+${count}"
+renamed        = "»${count}"
+deleted        = "✘${count}"
+
+[git_state]
+format     = "\\([$state( $progress_current/$progress_total)]($style)\\) "
+style      = "bold yellow"
+rebase     = "REBASING"
+merge      = "MERGING"
+revert     = "REVERTING"
+cherry_pick = "CHERRY-PICKING"
+bisect     = "BISECTING"
+
+[git_commit]
+commit_hash_length = 7
+tag_symbol         = "󰓼 "
+
+# ── Python ───────────────────────────────────────────────────
+[python]
+symbol		= " "
+style                = "bold yellow"
+format               = "via [${symbol}${pyenv_prefix}(${version})( \\($virtualenv\\))]($style) "
+python_binary        = ["python3", "python"]
+detect_extensions    = ["py"]
+detect_files         = ["requirements.txt", "pyproject.toml", "Pipfile", "setup.py", "tox.ini", ".python-version"]
+
+# ── Java ─────────────────────────────────────────────────────
+# Shown when pom.xml, build.gradle.kts, build.sbt, .java-version, etc. are present
+[java]
+symbol = " "
+style  = "bold red"
+format = "via [${symbol}(${version})]($style) "
+
+# ── Node.js (handy for full-stack work) ──────────────────────
+[nodejs]
+symbol               = " "
+style                = "bold green"
+format               = "via [${symbol}(${version})]($style) "
+disabled             = false
+
+# ── Docker ───────────────────────────────────────────────────
+[docker_context]
+symbol = "  "
+style  = "blue bold"
+format = "via [$symbol$context]($style) "
+only_with_files = true
+
+# ── Package version (Maven, npm, Cargo, etc.) ────────────────
+[package]
+symbol   = "󰏗 "
+style    = "bold 208"
+format   = "is [$symbol$version]($style) "
+disabled = false
+
+# ── Command execution time ───────────────────────────────────
+[cmd_duration]
+min_time = 2_000
+format   = "took [$duration]($style) "
+style    = "bold yellow"
+
+# ── User & host (only show for SSH or root) ──────────────────
+[username]
+style_user = "bold blue"
+style_root = "bold red"
+format     = "[$user]($style)@"
+show_always = false
+
+[hostname]
+ssh_only = true
+format   = "[$hostname]($style) in "
+style    = "bold green"
+
+# ── Memory & battery (optional, disabled by default) ─────────
+[memory_usage]
+disabled    = true
+threshold   = 75
+symbol      = " "
+style       = "bold dimmed white"
+
+[battery]
+disabled = true
+
+# ── Disable noisy modules ────────────────────────────────────
+[aws]
+disabled = true
+
+[gcloud]
+disabled = true

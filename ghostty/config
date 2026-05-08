@@ -1,0 +1,16 @@
+# Theme
+theme = Catppuccin Macchiato
+font-family = Cousine
+
+cursor-invert-fg-bg=true
+cursor-opacity=0.8
+cursor-style=bar
+
+background-opacity=0.96
+
+window-decoration=none
+window-padding-x=2
+window-padding-y=2
+window-padding-balance=true
+quit-after-last-window-closed=true
+

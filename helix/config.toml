@@ -1,0 +1,65 @@
+theme="catppuccin_macchiato"
+
+[editor]
+cursorline=true
+bufferline="always"
+true-color=true
+trim-trailing-whitespace=true
+end-of-line-diagnostics="hint"
+color-modes=true
+# rainbow-brackets=true
+
+[editor.cursor-shape]
+insert = "bar"
+normal = "block"
+select = "underline"
+
+[editor.soft-wrap]
+enable=true
+
+[editor.file-picker]
+hidden = false
+
+[editor.indent-guides]
+render = true
+skip-levels = 1
+
+[editor.whitespace.render]
+space = "none"
+tab = "all"
+nbsp = "none"
+nnbsp = "none"
+newline = "none"
+
+[editor.inline-diagnostics]
+cursor-line = "warning"
+
+[editor.whitespace.characters]
+# space = "·"
+nbsp = "⍽"
+nnbsp = "␣"
+tab = "→"
+newline = "⏎"
+tabpad = "·"
+
+[editor.statusline]
+left = [
+  "mode",
+  "spinner",
+  "version-control",
+  "separator",
+  "file-name",
+  "read-only-indicator",
+  "file-modification-indicator",
+
+]
+center = []
+right = [
+  "diagnostics",
+  "workspace-diagnostics",
+  "position",
+  "total-line-numbers",
+  "file-type",
+  "register",
+]
+separator = "│"
