@@ -17,3 +17,7 @@ function y() {
 export EDITOR=nvim
 
 gsettings set org.gnome.desktop.input-sources xkb-options "['caps:escape']"
+
+export STARSHIP_CONFIG="$HOME/.config/starship/starship.toml"
+eval "$(starship init bash)"
+
