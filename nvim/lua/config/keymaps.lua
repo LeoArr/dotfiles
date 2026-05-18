@@ -34,3 +34,11 @@ map('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 map('n', '<leader>w', '<cmd>w<cr>', { desc = 'Save file' })
 map('n', '<leader>W', '<cmd>noa w<cr>', { desc = 'Save without formatting' })
 map('n', '<leader>bd', '<cmd>bd<cr>', { desc = '[D]elete [B]uffer' })
+
+-- Tab navigation
+map('n', '<leader>tc', '<cmd>tabnew<CR>', { desc = 'Create new tab' })
+map('n', '<leader>tq', '<cmd>tabclose<CR>', { desc = 'Close current tab' })
+map('n', '<leader>tQ', '<cmd>tabclose!<CR>', { desc = 'Force close tab' })
+map('n', '<leader>ts', '<cmd>tab split<CR>', { desc = 'Open buffer in new tab' })
+map('n', '<leader>tn', '<cmd>tabnext<CR>', { desc = 'Next tab' })
+map('n', '<leader>tp', '<cmd>tabprevious<CR>', { desc = 'Previous tab' })
