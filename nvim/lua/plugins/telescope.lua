@@ -12,15 +12,20 @@ return {
     },
     'nvim-telescope/telescope-ui-select.nvim',
     { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
+    'nvim-telescope/telescope-live-grep-args.nvim',
   },
   config = function()
     require('telescope').setup {
       extensions = {
         ['ui-select'] = { require('telescope.themes').get_dropdown() },
+        live_grep_args = {
+          auto_quoting = true,
+        },
       },
     }
     pcall(require('telescope').load_extension, 'fzf')
     pcall(require('telescope').load_extension, 'ui-select')
+    require('telescope').load_extension 'live_grep_args'
 
     local builtin = require 'telescope.builtin'
     local map = vim.keymap.set
@@ -33,9 +38,8 @@ return {
     map('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
     map('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files' })
     map('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
-
     map('n', '<leader>sg', function()
-      builtin.live_grep { use_regex = true }
+      require('telescope').extensions.live_grep_args.live_grep_args()
     end, { desc = '[S]earch by [G]rep' })
 
     map('n', '<leader>/', function()
