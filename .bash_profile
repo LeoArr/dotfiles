@@ -1,23 +1,16 @@
-# .bash_profile
+# ~/.bash_profile — login shells only. Environment/one-time setup lives here;
+# all interactive setup lives in ~/.bashrc so tmux panes get it too.
 
-# User specific environment and startup programs
-export PYENV_ROOT="$HOME/.pyenv"
-[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init - bash)"
+# User bin dirs (idempotent)
+case ":$PATH:" in
+	*":$HOME/.local/bin:"*) ;;
+	*) PATH="$HOME/.local/bin:$HOME/bin:$PATH" ;;
+esac
+export PATH
 
-function y() {
-	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
-	yazi "$@" --cwd-file="$tmp"
-	IFS= read -r -d '' cwd < "$tmp"
-	[ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
-	rm -f -- "$tmp"
-}
+# Caps Lock → Escape, only on GNOME desktops
+if [[ "${XDG_CURRENT_DESKTOP:-}" == *GNOME* ]] && command -v gsettings >/dev/null; then
+	gsettings set org.gnome.desktop.input-sources xkb-options "['caps:escape']" 2>/dev/null
+fi
 
-# Default editor
-export EDITOR=nvim
-
-gsettings set org.gnome.desktop.input-sources xkb-options "['caps:escape']"
-
-export STARSHIP_CONFIG="$HOME/.config/starship/starship.toml"
-eval "$(starship init bash)"
-
+[ -f "$HOME/.bashrc" ] && . "$HOME/.bashrc"

@@ -8,6 +8,10 @@ cursor-style=bar
 
 background-opacity=0.96
 
+# Shift+Enter sends ESC+CR (read as Alt+Enter), which Claude Code and other
+# CLI apps treat as "insert newline". Works both inside and outside tmux.
+keybind = shift+enter=text:\x1b\r
+
 window-decoration=none
 window-padding-x=2
 window-padding-y=2

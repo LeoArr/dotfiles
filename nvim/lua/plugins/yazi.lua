@@ -32,18 +32,13 @@ return {
     keymaps = {
       show_help = '<f1>',
     },
+    highlight_hovered_buffer_when_in_yazi = false,
+    highlight_groups = {
+      hovered_buffer = nil,
+      hovered_buffer_in_same_directory = nil,
+    },
   },
-  -- 👇 if you use `open_for_directories=true`, this is recommended
   init = function()
-    -- mark netrw as loaded so it's not loaded at all.
-    --
-    -- More details: https://github.com/mikavilpas/yazi.nvim/issues/802
     vim.g.loaded_netrwPlugin = 1
   end,
-  highlight_hovered_buffer_when_in_yazi = false,
-  -- or in newer versions:
-  highlight_groups = {
-    hovered_buffer = nil,
-    hovered_buffer_in_same_directory = nil,
-  },
 }

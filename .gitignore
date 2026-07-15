@@ -7,3 +7,7 @@ helix/runtime
 !ghostty
 !lazygit
 !starship
+!.bash_profile
+!.bashrc
+!install.sh
+!CLAUDE.md
