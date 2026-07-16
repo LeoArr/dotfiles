@@ -8,9 +8,9 @@
 # Global definitions (Fedora/RHEL; Debian handles /etc/bash.bashrc itself)
 [ -f /etc/bashrc ] && . /etc/bashrc
 
-# Terminfo fallback: ghostty's terminfo isn't installed on most servers,
-# and an unknown $TERM breaks colors, keys, and clipboard.
-if [[ $TERM == xterm-ghostty ]] && ! infocmp "$TERM" &>/dev/null; then
+# Terminfo fallback: ghostty's and kitty's terminfo entries aren't installed
+# on most servers, and an unknown $TERM breaks colors, keys, and clipboard.
+if [[ $TERM == xterm-ghostty || $TERM == xterm-kitty ]] && ! infocmp "$TERM" &>/dev/null; then
   export TERM=xterm-256color
 fi
 
@@ -27,6 +27,29 @@ if [ -d "$HOME/.pyenv" ]; then
   [ -d "$PYENV_ROOT/bin" ] && PATH="$PYENV_ROOT/bin:$PATH"
   command -v pyenv >/dev/null && eval "$(pyenv init - bash)"
 fi
+
+# History: big, deduped, appended after every command so all tmux panes
+# share one history and nothing is lost when a pane closes.
+shopt -s histappend
+HISTSIZE=100000
+HISTFILESIZE=200000
+HISTCONTROL=ignoreboth:erasedups
+PROMPT_COMMAND="history -a${PROMPT_COMMAND:+; $PROMPT_COMMAND}"
+
+# fzf: fuzzy Ctrl+R history search and Ctrl+T file picker (if installed)
+if command -v fzf >/dev/null; then
+  if fzf --bash &>/dev/null; then
+    eval "$(fzf --bash)"
+  else # older packages (e.g. Ubuntu apt) lack --bash
+    for _f in /usr/share/fzf/shell/key-bindings.bash /usr/share/doc/fzf/examples/key-bindings.bash; do
+      [ -f "$_f" ] && . "$_f"
+    done
+    unset _f
+  fi
+fi
+
+# zoxide: `z <fuzzy-name>` jumps to frecent directories (if installed)
+command -v zoxide >/dev/null && eval "$(zoxide init bash)"
 
 # yazi: change the shell's cwd on exit
 function y() {

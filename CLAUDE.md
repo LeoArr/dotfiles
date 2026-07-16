@@ -9,24 +9,28 @@ Personal dotfiles for a Linux (Fedora, Ubuntu, and other distros) development en
 - `nvim/` → `~/.config/nvim`
 - `helix/` → `~/.config/helix`
 - `ghostty/` → `~/.config/ghostty`
+- `kitty/` → `~/.config/kitty`
 - `tmux/` → `~/.config/tmux`
 - `yazi/` → `~/.config/yazi`
 - `lazygit/` → `~/.config/lazygit`
 - `starship/` → `~/.config/starship`
+- `git/` → `~/.config/git` (tracked git defaults + global ignore; identity lives in `~/.gitconfig.local` via `[include]`)
 - `.bash_profile` → `~/.bash_profile`
 - `.bashrc` → `~/.bashrc`
+- `.inputrc` → `~/.inputrc` (readline: case-insensitive completion, prefix history search on ↑/↓)
 
-`install.sh` creates the symlinks (backing up anything in the way, and migrating a pre-existing real `~/.bashrc` to `~/.bashrc.local`). Edits take effect immediately on next launch of the respective tool (no build step).
+`install.sh` creates the symlinks (`install.sh --check` reports missing tools with dnf/apt install hints) (backing up anything in the way, and migrating a pre-existing real `~/.bashrc` to `~/.bashrc.local`). Edits take effect immediately on next launch of the respective tool (no build step).
 
 ## Clipboard & keys architecture (do not regress)
 
-**OSC 52 is the single clipboard transport.** The terminal (Ghostty) owns the system clipboard; tmux and Neovim copy by emitting OSC 52, which works identically on Wayland, X11, and over SSH. Never reintroduce `pbcopy`/`xclip`/`wl-copy` pipes. The load-bearing pieces:
+**OSC 52 is the single clipboard transport.** The terminal (Ghostty or Kitty — both supported, see below) owns the system clipboard; tmux and Neovim copy by emitting OSC 52, which works identically on Wayland, X11, and over SSH. Never reintroduce `pbcopy`/`xclip`/`wl-copy` pipes. The load-bearing pieces:
 
 - tmux: `set-clipboard on`, `allow-passthrough on`, copy bindings use `copy-selection-and-cancel` (no external command)
 - Neovim: `clipboard=unnamedplus`; when `$SSH_TTY` is set, an explicit OSC 52 provider (copy only — paste comes from the terminal via Ctrl+Shift+V)
-- `.bashrc` falls back to `TERM=xterm-256color` when ghostty's terminfo is missing (servers)
+- Kitty writes OSC 52 to the system clipboard by default (`clipboard_control`'s default already includes `write-clipboard`/`write-primary`) — no config override needed
+- `.bashrc` falls back to `TERM=xterm-256color` when ghostty's or kitty's terminfo is missing (servers)
 
-**Shift+Enter newline in Claude Code:** Ghostty binds `shift+enter` to send `ESC+CR` (`text:\x1b\r`); tmux additionally enables `extended-keys` for kitty-protocol apps.
+**Shift+Enter newline in Claude Code:** Ghostty binds `shift+enter` to send `ESC+CR` (`text:\x1b\r`); Kitty does the same via `map shift+enter send_text all \x1b\r`. tmux additionally enables `extended-keys` for kitty-protocol apps.
 
 ## Neovim
 
@@ -43,6 +47,7 @@ stylua nvim/lua/                   # format all
 
 The whole environment uses **Catppuccin Macchiato** across all tools:
 - Ghostty: `theme = Catppuccin Macchiato` (`ghostty/config`)
+- Kitty: palette inlined in `kitty/kitty.conf` (no bundled-theme shorthand like Ghostty's)
 - Helix: `theme="catppuccin_macchiato"` (`helix/config.toml`)
 - tmux: `@catppuccin_flavor "macchiato"` (`tmux/tmux.conf`)
 - Neovim: Catppuccin Macchiato via `lua/plugins/colorscheme.lua`
@@ -63,7 +68,7 @@ Plugins are vendored into `tmux/plugins/` (TPM, catppuccin, tmux-battery, tmux-c
 
 Three-file structure; everything is guarded (`command -v` / dir checks) so the same files work on Fedora, Ubuntu, and headless servers:
 
-- `.bashrc` (tracked) — all interactive setup: pyenv, starship, `EDITOR=nvim`, the `y` yazi-cwd wrapper, terminfo fallback. Sourced by every interactive shell, including tmux panes.
+- `.bashrc` (tracked) — all interactive setup: pyenv, starship, fzf (Ctrl+R/Ctrl+T), zoxide (`z`), shared-across-panes history (`histappend` + `history -a` in `PROMPT_COMMAND`; starship chains it via `STARSHIP_PROMPT_COMMAND`), `EDITOR=nvim`, the `y` yazi-cwd wrapper, terminfo fallback. Sourced by every interactive shell, including tmux panes.
 - `.bash_profile` (tracked) — login shells only: PATH for `~/.local/bin`, Caps Lock → Escape via `gsettings` (GNOME only), then sources `.bashrc`.
 - `~/.bashrc.local` (never tracked) — machine-specific config (work Kerberos, JAVA_HOME, aliases). Sourced at the end of `.bashrc`; must never source `.bash_profile` back.
 

@@ -1,0 +1,14 @@
+# ~/.inputrc — readline settings for bash, python, psql, and every readline app.
+# A user inputrc replaces the system one, so pull it back in first.
+$include /etc/inputrc
+
+# Friendlier tab completion
+set completion-ignore-case on
+set show-all-if-ambiguous on
+set colored-stats on
+set colored-completion-prefix on
+set mark-symlinked-directories on
+
+# Up/Down cycle only through history entries matching what you've typed so far
+"\e[A": history-search-backward
+"\e[B": history-search-forward

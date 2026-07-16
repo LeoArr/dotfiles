@@ -8,13 +8,42 @@ declare -A LINKS=(
   ["$DOTFILES/nvim"]="$HOME/.config/nvim"
   ["$DOTFILES/helix"]="$HOME/.config/helix"
   ["$DOTFILES/ghostty"]="$HOME/.config/ghostty"
+  ["$DOTFILES/kitty"]="$HOME/.config/kitty"
   ["$DOTFILES/tmux"]="$HOME/.config/tmux"
   ["$DOTFILES/yazi"]="$HOME/.config/yazi"
   ["$DOTFILES/lazygit"]="$HOME/.config/lazygit"
   ["$DOTFILES/starship"]="$HOME/.config/starship"
   ["$DOTFILES/.bash_profile"]="$HOME/.bash_profile"
   ["$DOTFILES/.bashrc"]="$HOME/.bashrc"
+  ["$DOTFILES/.inputrc"]="$HOME/.inputrc"
+  ["$DOTFILES/git"]="$HOME/.config/git"
 )
+
+# `install.sh --check`: report which expected tools are missing on this machine
+if [[ "${1:-}" == "--check" ]]; then
+  echo "Checking for expected tools:"
+  missing=()
+  for t in git nvim tmux kitty starship yazi lazygit rg fd fzf zoxide; do
+    if command -v "$t" >/dev/null || { [[ "$t" == fd ]] && command -v fdfind >/dev/null; }; then
+      echo "  ok       $t"
+    else
+      echo "  MISSING  $t"
+      missing+=("$t")
+    fi
+  done
+  if ((${#missing[@]})); then
+    pkgs=()
+    for t in "${missing[@]}"; do
+      case "$t" in rg) pkgs+=(ripgrep) ;; fd) pkgs+=(fd-find) ;; *) pkgs+=("$t") ;; esac
+    done
+    echo
+    echo "Install with:"
+    echo "  Fedora: sudo dnf install ${pkgs[*]}"
+    echo "  Ubuntu: sudo apt install ${pkgs[*]}"
+    echo "  (starship and lazygit may need a manual install on Ubuntu)"
+  fi
+  exit 0
+fi
 
 backup_and_link() {
   local src="$1"
@@ -48,6 +77,14 @@ if [[ -f "$HOME/.bashrc" && ! -L "$HOME/.bashrc" && ! -e "$HOME/.bashrc.local" ]
   if grep -q 'bash_profile' "$HOME/.bashrc.local"; then
     echo "  WARNING: ~/.bashrc.local references .bash_profile — remove that line or shells will source-loop."
   fi
+fi
+
+# Same idea for git identity: ~/.gitconfig becomes ~/.gitconfig.local, which the
+# tracked ~/.config/git/config includes. It must be MOVED, not copied — a
+# remaining ~/.gitconfig is read after the XDG config and would shadow it.
+if [[ -f "$HOME/.gitconfig" && ! -L "$HOME/.gitconfig" && ! -e "$HOME/.gitconfig.local" ]]; then
+  mv "$HOME/.gitconfig" "$HOME/.gitconfig.local"
+  echo "  migrated existing ~/.gitconfig → ~/.gitconfig.local"
 fi
 
 for src in "${!LINKS[@]}"; do

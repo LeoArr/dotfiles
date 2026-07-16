@@ -1,13 +1,20 @@
+# Allowlist: ignore everything at the top level, re-include tracked entries.
+# /* is anchored — unlike bare *, it doesn't ignore new files inside subdirs.
+/*
+!/helix
+!/tmux
+!/nvim
+!/yazi
+!/ghostty
+!/kitty
+!/lazygit
+!/starship
+!/git
+!/.bash_profile
+!/.bashrc
+!/.inputrc
+!/install.sh
+!/CLAUDE.md
+!/.gitignore
+
 helix/runtime
-*
-!helix
-!tmux
-!nvim
-!yazi
-!ghostty
-!lazygit
-!starship
-!.bash_profile
-!.bashrc
-!install.sh
-!CLAUDE.md

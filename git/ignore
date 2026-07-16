@@ -1,0 +1,2 @@
+# Global gitignore (~/.config/git/ignore) — applies to every repo on every machine
+**/.claude/settings.local.json
