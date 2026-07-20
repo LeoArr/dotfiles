@@ -14,6 +14,7 @@ Personal dotfiles for a Linux (Fedora, Ubuntu, and other distros) development en
 - `yazi/` → `~/.config/yazi`
 - `lazygit/` → `~/.config/lazygit`
 - `starship/` → `~/.config/starship`
+- `opencode/` → `~/.config/opencode`
 - `git/` → `~/.config/git` (tracked git defaults + global ignore; identity lives in `~/.gitconfig.local` via `[include]`)
 - `.bash_profile` → `~/.bash_profile`
 - `.bashrc` → `~/.bashrc`

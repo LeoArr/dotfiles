@@ -67,3 +67,9 @@ command -v starship >/dev/null && eval "$(starship init bash)"
 # Machine-specific config (work setup, secrets, JAVA_HOME, …) — never tracked.
 # Must NOT source ~/.bash_profile or ~/.bashrc back.
 [ -f "$HOME/.bashrc.local" ] && . "$HOME/.bashrc.local"
+
+# kimi-code
+export PATH="/home/leoarr/.kimi-code/bin:$PATH"
+
+# opencode
+export PATH=/home/leoarr/.opencode/bin:$PATH

@@ -13,6 +13,7 @@ declare -A LINKS=(
   ["$DOTFILES/yazi"]="$HOME/.config/yazi"
   ["$DOTFILES/lazygit"]="$HOME/.config/lazygit"
   ["$DOTFILES/starship"]="$HOME/.config/starship"
+  ["$DOTFILES/opencode"]="$HOME/.config/opencode"
   ["$DOTFILES/.bash_profile"]="$HOME/.bash_profile"
   ["$DOTFILES/.bashrc"]="$HOME/.bashrc"
   ["$DOTFILES/.inputrc"]="$HOME/.inputrc"
